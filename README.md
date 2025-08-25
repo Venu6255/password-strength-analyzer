@@ -24,8 +24,9 @@ A modern, privacy-first web app that analyzes password strength with advanced en
 
 1. Clone this repository:
 
-git clone https://github.com/<Venu6255>/password-strength-analyzer.git
-cd password-strength-analyzer
+  git clone https://github.com/<Venu6255>/password-strength-analyzer.git
+
+  cd password-strength-analyzer
 
 
 2. Create and activate a virtual environment:
@@ -33,12 +34,12 @@ cd password-strength-analyzer
 
 3. Install dependencies:
 
-pip install -r pssw_requirements.txt
+  pip install -r pssw_requirements.txt
 
 
 4. Run the Flask app:
 
-python pssw_app.py
+  python pssw_app.py
 
 
 5. Open your browser at `http://127.0.0.1:5000`
