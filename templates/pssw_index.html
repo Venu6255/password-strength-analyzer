@@ -1,0 +1,431 @@
+{% extends "pssw_base.html" %}
+
+{% block title %}Password Analyzer Pro - Strength Analysis & Wordlist Generator{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100 py-5">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold text-primary mb-4 animate-slide-in">
+                        <i class="bi bi-shield-lock-fill me-3"></i>
+                        Password Security Suite
+                    </h1>
+                    <p class="lead mb-4 animate-slide-in-delay-1">
+                        Analyze password strength with advanced algorithms and generate custom wordlists 
+                        for security testing. Professional-grade tools for cybersecurity professionals.
+                    </p>
+                    <div class="d-flex gap-3 animate-slide-in-delay-2">
+                        <a href="#password-analyzer" class="btn btn-primary btn-lg px-4 smooth-scroll">
+                            <i class="bi bi-search me-2"></i>Start Analysis
+                        </a>
+                        <a href="#wordlist-generator" class="btn btn-outline-primary btn-lg px-4 smooth-scroll">
+                            <i class="bi bi-list-ul me-2"></i>Generate Wordlist
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-animation">
+                    <div class="security-icon-container animate-float">
+                        <i class="bi bi-shield-check security-icon text-success"></i>
+                        <div class="pulse-ring"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Password Analyzer Section -->
+<section id="password-analyzer" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-primary">
+                        <i class="bi bi-search me-2"></i>Password Strength Analyzer
+                    </h2>
+                    <p class="text-muted">
+                        Advanced password analysis using entropy calculations, pattern detection, and security best practices
+                    </p>
+                </div>
+
+                <div class="card shadow-lg border-0 analyzer-card">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label for="passwordInput" class="form-label fw-semibold">
+                                        <i class="bi bi-key me-1"></i>Enter Password
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control form-control-lg" 
+                                               id="passwordInput" placeholder="Type your password here...">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="bi bi-eye" id="toggleIcon"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        Your password is processed locally and never sent to our servers
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary btn-lg" id="analyzeBtn">
+                                        <i class="bi bi-play-fill me-2"></i>Analyze Password
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="clearBtn">
+                                        <i class="bi bi-x-lg me-2"></i>Clear
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div id="analysisResults" class="analysis-results d-none">
+                                    <!-- Strength Meter -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-semibold">Strength Score</span>
+                                            <span id="strengthScore" class="badge"></span>
+                                        </div>
+                                        <div class="progress mb-2" style="height: 10px;">
+                                            <div id="strengthBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                                 role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                        <small id="strengthLabel" class="text-muted"></small>
+                                    </div>
+
+                                    <!-- Quick Stats -->
+                                    <div class="row text-center mb-3">
+                                        <div class="col-6">
+                                            <div class="stat-card">
+                                                <div id="entropyValue" class="stat-number">0</div>
+                                                <div class="stat-label">Entropy</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="stat-card">
+                                                <div id="lengthValue" class="stat-number">0</div>
+                                                <div class="stat-label">Length</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Character Analysis -->
+                                    <div class="character-indicators mb-3">
+                                        <div class="indicator" id="lowercaseInd">
+                                            <i class="bi bi-check-circle-fill"></i> Lowercase
+                                        </div>
+                                        <div class="indicator" id="uppercaseInd">
+                                            <i class="bi bi-check-circle-fill"></i> Uppercase
+                                        </div>
+                                        <div class="indicator" id="digitInd">
+                                            <i class="bi bi-check-circle-fill"></i> Numbers
+                                        </div>
+                                        <div class="indicator" id="specialInd">
+                                            <i class="bi bi-check-circle-fill"></i> Symbols
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-sm btn-outline-primary w-100" id="viewDetailsBtn">
+                                        <i class="bi bi-list-ul me-1"></i>View Detailed Analysis
+                                    </button>
+                                </div>
+
+                                <div id="emptyState" class="text-center text-muted py-4">
+                                    <i class="bi bi-shield-exclamation display-4 mb-3"></i>
+                                    <p>Enter a password above to see detailed strength analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Detailed Analysis Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-graph-up me-2"></i>Detailed Password Analysis
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsContent">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Wordlist Generator Section -->
+<section id="wordlist-generator" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-primary">
+                        <i class="bi bi-list-ul me-2"></i>Custom Wordlist Generator
+                    </h2>
+                    <p class="text-muted">
+                        Generate targeted wordlists for security testing using personal information and common patterns
+                    </p>
+                </div>
+
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h5 class="mb-3">
+                                    <i class="bi bi-person-fill me-2"></i>Personal Information Inputs
+                                </h5>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="nameInput" class="form-label">Names</label>
+                                        <input type="text" class="form-control wordlist-input" 
+                                               id="nameInput" placeholder="John, Jane, Smith">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="petInput" class="form-label">Pet Names</label>
+                                        <input type="text" class="form-control wordlist-input" 
+                                               id="petInput" placeholder="Buddy, Max, Luna">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="dateInput" class="form-label">Important Dates</label>
+                                        <input type="text" class="form-control wordlist-input" 
+                                               id="dateInput" placeholder="1990, 2000, 15, 25">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="locationInput" class="form-label">Locations</label>
+                                        <input type="text" class="form-control wordlist-input" 
+                                               id="locationInput" placeholder="NYC, London, Home">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <label for="companyInput" class="form-label">Companies/Schools</label>
+                                        <input type="text" class="form-control wordlist-input" 
+                                               id="companyInput" placeholder="Google, MIT, Apple">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="hobbyInput" class="form-label">Hobbies/Interests</label>
+                                        <input type="text" class="form-control wordlist-input" 
+                                               id="hobbyInput" placeholder="Football, Music, Gaming">
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="customInput" class="form-label">Additional Keywords</label>
+                                    <textarea class="form-control wordlist-input" id="customInput" rows="2" 
+                                              placeholder="Any other relevant words or phrases..."></textarea>
+                                </div>
+
+                                <h5 class="mb-3">
+                                    <i class="bi bi-gear-fill me-2"></i>Generation Options
+                                </h5>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="includeYears" checked>
+                                            <label class="form-check-label" for="includeYears">
+                                                Include year combinations (2023, 24, etc.)
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="includeLeet" checked>
+                                            <label class="form-check-label" for="includeLeet">
+                                                Include leet speak variations (@, 3, 1, etc.)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="includeCommon" checked>
+                                            <label class="form-check-label" for="includeCommon">
+                                                Include common patterns (123, !@#, etc.)
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="includeVariations" checked>
+                                            <label class="form-check-label" for="includeVariations">
+                                                Include word variations (reverse, caps, etc.)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex">
+                                    <button type="button" class="btn btn-primary btn-lg flex-fill" id="generateBtn">
+                                        <i class="bi bi-magic me-2"></i>Generate Wordlist
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-lg" id="clearWordlistBtn">
+                                        <i class="bi bi-x-lg me-2"></i>Clear All
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div id="wordlistResults" class="wordlist-results d-none">
+                                    <h5 class="mb-3">
+                                        <i class="bi bi-list-check me-2"></i>Generated Wordlist
+                                    </h5>
+                                    
+                                    <div class="stats-container mb-3">
+                                        <div class="stat-item">
+                                            <span class="stat-label">Total Words:</span>
+                                            <span id="totalWords" class="stat-value">0</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Avg Length:</span>
+                                            <span id="avgLength" class="stat-value">0</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="preview-container mb-3">
+                                        <div class="preview-header">
+                                            <small class="text-muted">Preview (first 20 words):</small>
+                                        </div>
+                                        <div id="wordlistPreview" class="preview-list">
+                                            <!-- Preview items loaded here -->
+                                        </div>
+                                    </div>
+
+                                    <div class="download-section">
+                                        <div class="row mb-2">
+                                            <div class="col-8">
+                                                <select class="form-select form-select-sm" id="downloadFormat">
+                                                    <option value="txt">Text (.txt)</option>
+                                                    <option value="csv">CSV (.csv)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="btn btn-success btn-sm w-100" id="downloadBtn">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="wordlistEmptyState" class="text-center text-muted py-4">
+                                    <i class="bi bi-list-ul display-4 mb-3"></i>
+                                    <p>Fill in the inputs above and click Generate to create your custom wordlist</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="fw-bold text-primary mb-4">
+                    <i class="bi bi-info-circle me-2"></i>About This Tool
+                </h2>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card h-100">
+                            <div class="feature-icon">
+                                <i class="bi bi-cpu"></i>
+                            </div>
+                            <h5>Advanced Analysis</h5>
+                            <p class="text-muted">
+                                Uses entropy calculations, pattern detection, and multiple algorithms 
+                                including zxcvbn for comprehensive password strength assessment.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card h-100">
+                            <div class="feature-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h5>Privacy First</h5>
+                            <p class="text-muted">
+                                All password analysis happens locally in your browser. 
+                                No passwords are transmitted to or stored on our servers.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card h-100">
+                            <div class="feature-icon">
+                                <i class="bi bi-list-stars"></i>
+                            </div>
+                            <h5>Smart Wordlists</h5>
+                            <p class="text-muted">
+                                Generate targeted wordlists using personal information, 
+                                common patterns, leet speak, and security testing variations.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="feature-card h-100">
+                            <div class="feature-icon">
+                                <i class="bi bi-code-square"></i>
+                            </div>
+                            <h5>Open Source</h5>
+                            <p class="text-muted">
+                                Built with Python Flask and modern web technologies. 
+                                Perfect for cybersecurity professionals and educational use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast" role="alert">
+        <div class="toast-header">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            <!-- Message content -->
+        </div>
+    </div>
+</div>
+
+<!-- Error Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="errorToast" class="toast" role="alert">
+        <div class="toast-header">
+            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="errorMessage">
+            <!-- Error message content -->
+        </div>
+    </div>
+</div>
+{% endblock %}
